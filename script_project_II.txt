@@ -1,0 +1,194 @@
+CREATE DATABASE `project2` CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_0900_ai_ci';
+
+CREATE TABLE `project2`.`category`  (
+  `category_id` int NOT NULL,
+  `name` varchar(255) NULL,
+  `descripcion` varchar(255) NULL,
+  PRIMARY KEY (`category_id`)
+);
+
+CREATE TABLE `project2`.`subcategory`  (
+  `subcategory_id` int NOT NULL,
+  `category_id` int NULL,
+  `nombre` varchar(255) NULL,
+  `descripcion` varchar(255) NULL,
+  `sub_subcategory_id` int NULL,
+  PRIMARY KEY (`subcategory_id`)
+);
+
+
+CREATE TABLE `project2`.`product`  (
+  `product_id` int NOT NULL,
+  `category_id` int NULL,
+  `sub_category_id` int NULL,
+  `nombre` varchar(255) NULL,
+  `descripcion` varchar(255) NULL,
+  `precio` varchar(255) NULL,
+  `stock` varchar(255) NULL,
+  PRIMARY KEY (`product_id`)
+);
+
+CREATE TABLE `project2`.`price`  (
+  `id_price` decimal(10, 2) NOT NULL,
+  `product_id` int NULL,
+  `price_list` varchar(255) NULL,
+  PRIMARY KEY (`id_price`)
+);
+
+
+CREATE TABLE `project2`.`user`  (
+  `id_user` int NOT NULL,
+  `nombre` varchar(255) NULL,
+  `password` varchar(255) NULL,
+  `correo` varchar(255) NULL,
+  `direccion` varchar(255) NULL,
+  `tarjeta_id` int NULL,
+  PRIMARY KEY (`id_user`)
+);
+
+
+CREATE TABLE `project2`.`tarjeta`  (
+  `id_tarjeta` int NOT NULL,
+  `nombre_tituar` varchar(255) NULL,
+  `no_tarjeta` varchar(255) NULL,
+  `fecha_vencimiento` date NULL,
+  `codigo` varchar(255) NULL,
+  `user_id` int NULL,
+  PRIMARY KEY (`id_tarjeta`)
+);
+
+CREATE TABLE `project2`.`car`  (
+  `car_id` int NOT NULL,
+  `id_compra` varchar(255) NULL,
+  `user_id` int NULL,
+  `invitado` varchar(255) NULL,
+  PRIMARY KEY (`car_id`)
+);
+
+CREATE TABLE `project2`.`car_detalle`  (
+  `id_line` varchar(255) NOT NULL,
+  `product_id` int NULL,
+  `cantidad` varchar(255) NULL,
+  `precio` varchar(255) NULL,
+  `no_linea` varchar(255) NULL,
+  `fecha` date NULL,
+  'car_id' int NULL,
+  PRIMARY KEY (`id_line`)
+);
+
+
+
+CREATE TABLE `project2`.`temporada`  (
+  `temporada_id` int NOT NULL,
+  `nombre` varchar(255) NULL,
+  `category_id` int NULL,
+  `sub_category_id` int NULL,
+  `datefrom` datetime NULL,
+  `dateto` datetime NULL,
+  PRIMARY KEY (`temporada_id`)
+);
+
+-- Tabla subcategory
+ALTER TABLE subcategory
+ADD CONSTRAINT fk_subcategory_category
+FOREIGN KEY (category_id)
+REFERENCES category(category_id);
+
+-- Tabla product
+ALTER TABLE product
+ADD CONSTRAINT fk_product_category
+FOREIGN KEY (category_id)
+REFERENCES category(category_id);
+
+ALTER TABLE product
+ADD CONSTRAINT fk_product_subcategory
+FOREIGN KEY (sub_category_id)
+REFERENCES subcategory(subcategory_id);
+
+-- Tabla price
+ALTER TABLE price
+ADD CONSTRAINT fk_price_product
+FOREIGN KEY (product_id)
+REFERENCES product(product_id);
+
+-- Tabla tarjeta
+ALTER TABLE tarjeta
+ADD CONSTRAINT fk_tarjeta_user
+FOREIGN KEY (user_id)
+REFERENCES user(id_user);
+
+-- Tabla car
+ALTER TABLE car
+ADD CONSTRAINT fk_car_user
+FOREIGN KEY (user_id)
+REFERENCES user(id_user);
+
+-- Tabla car_detalle
+ALTER TABLE car_detalle
+ADD CONSTRAINT fk_car_detalle_product
+FOREIGN KEY (product_id)
+REFERENCES product(product_id);
+
+
+-- Tabla temporada
+ALTER TABLE temporada
+ADD CONSTRAINT fk_temporada_category
+FOREIGN KEY (category_id)
+REFERENCES category(category_id);
+
+ALTER TABLE temporada
+ADD CONSTRAINT fk_temporada_subcategory
+FOREIGN KEY (sub_category_id)
+REFERENCES subcategory(subcategory_id);
+
+-- Tabla car_detalle
+ALTER TABLE car_detalle
+ADD CONSTRAINT fk_car_detalle
+FOREIGN KEY (car_id)
+REFERENCES car(car_id);
+
+ALTER TABLE user
+ADD CONSTRAINT fr_user_card
+FOREIGN KEY (tarjeta_id)
+REFERENCES tarjeta(id_tarjeta);
+
+
+
+-- Inserción de categorías adicionales
+INSERT INTO `project2`.`category` (`category_id`, `name`, `descripcion`) VALUES
+(1, 'Ropa', 'Ropa de moda para todas las edades'),
+(2, 'Electrónicos', 'Dispositivos electrónicos y accesorios'),
+(3, 'Juguetes', 'Juguetes y juegos para niños y niñas'),
+(4, 'Vehículos', 'Automóviles y vehículos motorizados'),
+(5, 'Música', 'Instrumentos musicales y accesorios'),
+(6, 'Video', 'Videojuegos y consolas');
+
+
+-- Subcategorías de Ropa
+INSERT INTO `project2`.`subcategory` (`subcategory_id`, `category_id`, `nombre`, `descripcion`, `sub_subcategory_id`) VALUES
+(1, 1, 'Masculina', 'Ropa para hombres', NULL),
+(2, 1, 'Femenina', 'Ropa para mujeres', NULL),
+(3, 1, 'Niños', 'Ropa para niños y niñas', NULL),
+(4, 1, 'Camisas', 'Camisas para hombres y mujeres', NULL),
+(5, 1, 'Pantalones', 'Pantalones para hombres y mujeres', NULL);
+
+-- Subcategorías de Juguetes
+INSERT INTO `project2`.`subcategory` (`subcategory_id`, `category_id`, `nombre`, `descripcion`, `sub_subcategory_id`) VALUES
+(11, 3, 'Muñecas', 'Muñecas y juguetes para niñas', NULL),
+(12, 3, 'Carros', 'Carros y vehículos de juguete', NULL),
+(13, 3, 'Juegos de mesa', 'Juegos de mesa y estrategia', NULL),
+(14, 3, 'Juguetes educativos', 'Juguetes educativos para niños', NULL),
+(15, 3, 'Juguetes al aire libre', 'Juguetes para actividades al aire libre', NULL);
+
+
+-- Sub-subcategorías de "Masculina"
+INSERT INTO `project2`.`subcategory` (`subcategory_id`, `category_id`, `nombre`, `descripcion`, `sub_subcategory_id`) VALUES
+(25, 1, 'Camisetas', 'Camisetas para hombres', 1),
+(26, 1, 'Pantalones cortos', 'Pantalones cortos para hombres', 1);
+
+
+-- Sub-subcategorías de "Teléfonos"
+INSERT INTO `project2`.`subcategory` (`subcategory_id`, `category_id`, `nombre`, `descripcion`, `sub_subcategory_id`) VALUES
+(31, 2, 'Smartphones', 'Smartphones y teléfonos móviles', 6),
+(32, 2, 'Accesorios para teléfonos', 'Accesorios para teléfonos móviles', 6);
+
