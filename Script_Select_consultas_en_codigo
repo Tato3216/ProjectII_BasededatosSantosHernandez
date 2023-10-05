@@ -1,0 +1,31 @@
+Clase index (index.php):
+Query para obtener las categorías:
+SELECT category_id, name FROM category
+Este query se utiliza para obtener la lista de categorías que se muestra en el menú desplegable de categorías en la barra de navegación.
+
+Clase productos (productos.php):
+Query para obtener productos por categoría y subcategoría:
+SELECT P.product_id, P.nombre, P.descripcion, P.stock, L.price_list AS precio FROM product P
+INNER JOIN price L ON L.product_id = P.product_id
+WHERE P.category_id = ? AND P.sub_category_id = ?
+Este query se utiliza para obtener productos en función de la categoría y subcategoría seleccionadas.
+
+Query para buscar productos por nombre:	
+SELECT P.product_id, P.nombre, P.descripcion, P.stock, L.price_list AS precio
+FROM product P
+INNER JOIN price L ON L.product_id = P.product_id
+WHERE P.nombre LIKE '%?%'
+Este query se utiliza para buscar productos por nombre cuando se realiza una búsqueda en la barra de búsqueda.
+
+Clase login (login.php):
+Query para verificar las credenciales de inicio de sesión:
+SELECT id_user, nombre, password FROM user WHERE nombre = ?
+Este query se utiliza para verificar si el nombre de usuario y la contraseña proporcionados en el formulario de inicio de sesión son correctos.
+
+Clase controller (controller.php):
+Query para obtener el ID de usuario por nombre de usuario:
+SELECT id_user FROM user WHERE nombre = ?
+Este query se utiliza para obtener el ID de usuario a partir del nombre de usuario.
+
+Query para obtener las credenciales de usuario para la verificación:
+SELECT id_user, nombre, password FROM user WHERE nombre = ?
