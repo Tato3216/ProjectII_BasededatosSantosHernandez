@@ -29,3 +29,33 @@ Este query se utiliza para obtener el ID de usuario a partir del nombre de usuar
 
 Query para obtener las credenciales de usuario para la verificación:
 SELECT id_user, nombre, password FROM user WHERE nombre = ?
+
+Clase registro:
+Query de inserción en la base de datos:
+"INSERT INTO user (nombre, password, correo) VALUES (?, ?, ?)";
+Propósito: Inserta un nuevo usuario en la tabla user de la base de datos con los datos proporcionados en el formulario de registro. Los valores se insertan de manera segura utilizando parámetros.
+
+Clase Subcategorias:
+Query de selección de subcategorías:
+"SELECT subcategory_id, nombre FROM subcategory WHERE category_id = $category_id AND sub_subcategory_id IS NULL";
+Propósito: Selecciona las subcategorías de productos que pertenecen a una categoría específica (category_id) y que no son sub-subcategorías. Estos datos se utilizan para mostrar botones de subcategorías en la página.
+
+Clase obtener_categorias:
+Query de selección de subcategorías:
+"SELECT subcategory_id, nombre FROM subcategory WHERE category_id = $categoryId AND sub_subcategory_id IS NULL";
+Propósito: Selecciona las subcategorías de productos que pertenecen a una categoría específica (categoryId) y que no son sub-subcategorías. Estos datos se utilizan para generar enlaces a las subcategorías.
+
+Clase carrito:
+Query de selección de información del carrito y el usuario (según el tipo de sesión):
+"SELECT C.car_id, C.fecha, U.nombre, U.correo, U.direccion
+          FROM car C
+          INNER JOIN user U ON U.id_user = C.user_id
+          WHERE C.user_id = ?";
+Propósito: Recupera información sobre el carrito de compras, como su ID, fecha, nombre del usuario, correo y dirección, según el tipo de sesión (usuario registrado o invitado). Esta información se utiliza para mostrar el detalle del carrito en la página.
+
+Query de selección de líneas del carrito (productos en el carrito):
+"SELECT L.product_id, P.nombre, P.descripcion, L.cantidad, L.precio, (L.cantidad * L.precio) AS total_linea
+                FROM car_detalle L
+                INNER JOIN product P ON P.product_id = L.product_id
+                WHERE L.car_id = ?";
+Propósito: Recupera las líneas del carrito de compras, incluyendo información sobre los productos, cantidades, precios y totales por línea, asociados al carrito identificado por su ID (car_id). Esta información se utiliza para mostrar los detalles de los productos en el carrito.
