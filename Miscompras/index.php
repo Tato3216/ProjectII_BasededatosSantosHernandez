@@ -1,3 +1,6 @@
+<?php
+include('controller.php'); // Incluye controller.php al comienzo del archivo
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,6 +137,18 @@
             margin-right: 20px;
         }
 
+        .login-button {
+            float: right;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+        .logout-button {
+            float: right;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
         .search-button {
             background-color: red;
             border: none;
@@ -141,7 +156,6 @@
             margin-top: 10px;
         }
 
-        /* Botón de Carrito de Compras */
         .cart-button {
             float: right;
             margin-top: 10px;
@@ -218,11 +232,20 @@
                 <button type="submit" name="buscar" class="search-button"><img src="images/lupa1.png" alt="Buscar" width="28" height="28"></button>
             </form>
         </div>
-        <a href="#" class="login-button">Iniciar Sesión</a>
+        <div class="login-button">
+        <a href="login.php" class="login-button"<?php if ($_SESSION['invitado'] === 'N') { echo ' style="display: none;"'; } ?>>Iniciar Sesión</a>
+        </div>
         <a href="Carrito.php" id="cart-link" class="cart-button"><img src="images/carrito.png" alt="Carrito" width="28" height="28"></a>
+            <div class="logout-button">
+            <?php
+            if ($_SESSION['invitado'] === 'N') {
+                echo '<a href="logout.php">Cerrar Sesión</a>';
+            }
+            ?>
+            </div>
     </div>
     <div>
-        <div class="season">
+        <div class="season"<?php if ($_SESSION['invitado'] === 'Y') { echo ' style="display: none;"'; } ?>>
             <a href="pagina-halloween.html" class="season-button season-button-halloween">Halloween</a>
             <a href="pagina-dia-ninos.html" class="season-button season-button-dia-ninos">Día de los niños</a>
             <a href="pagina-navidad.html" class="season-button season-button-navidad">Navidad</a>
@@ -240,7 +263,4 @@
         });
     });
 </script>
-<?php
-// include('subcategorias.php');
-?>
 </html>
